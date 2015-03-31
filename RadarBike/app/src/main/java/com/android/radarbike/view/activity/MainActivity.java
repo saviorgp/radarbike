@@ -1,11 +1,11 @@
 package com.android.radarbike.view.activity;
 
-import android.support.v7.appActionBarActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import radarbike.android.com.radarbike.R;
+import com.android.radarbike.R;
 
 
 public class MainActivity extends ActionBarActivity {
