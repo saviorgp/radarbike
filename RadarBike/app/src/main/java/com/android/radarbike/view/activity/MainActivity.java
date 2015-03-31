@@ -1,6 +1,6 @@
 package com.android.radarbike.view.activity;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.appActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

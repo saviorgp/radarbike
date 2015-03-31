@@ -18,20 +18,20 @@ import java.io.InputStreamReader;
  */
 public class WebServiceWrapper {
 
-    private static String SERVER = "http://127.0.0.1:8080/";
+    private static String SERVER = "http://radarbike-izze.rhcloud.com/position";
 
-    public static void callSetPosition(String ID, String lat, String log){
+    public static void callSetPosition(String imei, double lat, double lgn){
         try {
             HttpClient client = new DefaultHttpClient();
             HttpResponse response;
 
             JSONObject json  = new JSONObject();
 
-            json.put("ID", ID);
+            json.put("imei", imei);
             json.put("lat", lat);
-            json.put("long", log);
+            json.put("lgn", lgn);
 
-            HttpPost post = new HttpPost(SERVER + "/api/v1/savePosition");
+            HttpPost post = new HttpPost(SERVER);
             post.addHeader(HTTP.CONTENT_TYPE, "application/json");
 
             System.out.println(json);
@@ -57,14 +57,14 @@ public class WebServiceWrapper {
         }
     }
 
-    public static JSONObject callGetPositions(){
+    public static JSONObject callGetPositions(String imei){
         JSONObject result  = new JSONObject();
         try {
 
             HttpClient client = new DefaultHttpClient();
             HttpResponse response;
 
-            HttpGet get = new HttpGet(SERVER + "/api/v1/getPositions");
+            HttpGet get = new HttpGet(SERVER + "/" + imei);
             get.addHeader(HTTP.CONTENT_TYPE, "application/json");
 
             response = client.execute(get);
