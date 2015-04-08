@@ -18,9 +18,9 @@ import java.io.InputStreamReader;
  */
 public class WebServiceWrapper {
 
-    private static String SERVER = "http://radarbike-izze.rhcloud.com/position";
+    private static String SERVER = "http://radarbike-izze.rhcloud.com/";
 
-    public static void callSetPosition(String imei, double lat, double lgn){
+    public static void callSetPosition(String imei, double lat, double lng){
         try {
             HttpClient client = new DefaultHttpClient();
             HttpResponse response;
@@ -29,9 +29,9 @@ public class WebServiceWrapper {
 
             json.put("imei", imei);
             json.put("lat", lat);
-            json.put("lgn", lgn);
+            json.put("lng", lng);
 
-            HttpPost post = new HttpPost(SERVER);
+            HttpPost post = new HttpPost(SERVER + "position");
             post.addHeader(HTTP.CONTENT_TYPE, "application/json");
 
             System.out.println(json);
@@ -41,13 +41,14 @@ public class WebServiceWrapper {
             post.setEntity(se);
             response = client.execute(post);
 
-            String output = "";
+            StringBuffer output = new StringBuffer();
             if(response!=null){
                 InputStream in = response.getEntity().getContent(); //Get the data in the entity
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 System.out.println("Output from Server .... \n");
-                while ((output = br.readLine()) != null) {
-                    output += output;
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    output.append(line);
                     System.out.println(output);
                 }
             }
@@ -57,35 +58,72 @@ public class WebServiceWrapper {
         }
     }
 
-    public static JSONObject callGetPositions(String imei){
+    public static JSONObject callGetPositions(){
         JSONObject result  = new JSONObject();
         try {
 
             HttpClient client = new DefaultHttpClient();
             HttpResponse response;
 
-            HttpGet get = new HttpGet(SERVER + "/" + imei);
+            HttpGet get = new HttpGet(SERVER + "lastPosition");
             get.addHeader(HTTP.CONTENT_TYPE, "application/json");
 
             response = client.execute(get);
 
-            String output = "";
+            StringBuffer output = new StringBuffer();
             if(response!=null){
                 InputStream in = response.getEntity().getContent(); //Get the data in the entity
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 System.out.println("Output from Server .... \n");
-                while ((output = br.readLine()) != null) {
-                    output += output;
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    output.append(line);
                     System.out.println(output);
                 }
             }
 
-            result = new JSONObject(output);
+            result = new JSONObject(output.toString());
 
         } catch(Exception e) {
             e.printStackTrace();
         }
 
         return result;
+    }
+
+    public static void callCheckout(String imei){
+        try{
+            HttpClient client = new DefaultHttpClient();
+            HttpResponse response;
+
+            JSONObject json  = new JSONObject();
+
+            json.put("imei", imei);
+
+            HttpPost post = new HttpPost(SERVER + "checkout");
+            post.addHeader(HTTP.CONTENT_TYPE, "application/json");
+
+            System.out.println(json);
+
+            StringEntity se = new StringEntity(json.toString());
+
+            post.setEntity(se);
+            response = client.execute(post);
+
+            StringBuffer output = new StringBuffer();
+            if(response!=null){
+                InputStream in = response.getEntity().getContent(); //Get the data in the entity
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                System.out.println("Output from Server .... \n");
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    output.append(line);
+                    System.out.println(output);
+                }
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
