@@ -28,6 +28,7 @@ public class WebServiceHelper {
                 vo.setLat(((JSONObject) positions.get(i)).getDouble("lat"));
                 vo.setLng(((JSONObject) positions.get(i)).getDouble("lng"));
                 posList.add(vo);
+                Logger.LOGD("GETTING pos: " + vo.getLat() + "-" + vo.getLng());
             }
         } catch(Throwable t){
             Logger.LOGE(t.getMessage());
@@ -40,6 +41,7 @@ public class WebServiceHelper {
         TelephonyManager telephonyManager =
                 (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String imei = telephonyManager.getDeviceId();
+        Logger.LOGD("SENDING pos by " + imei + ": " + vo.getLat() + "-" + vo.getLng());
         WebServiceWrapper.callSetPosition(imei,vo.getLat(),vo.getLng());
     }
 }

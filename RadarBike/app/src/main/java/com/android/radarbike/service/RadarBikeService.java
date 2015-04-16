@@ -8,6 +8,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.android.radarbike.Helper.AdvertisementHelper;
 import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
 import com.android.radarbike.Helper.WebServiceHelper;
 import com.android.radarbike.model.PositionsVO;
@@ -98,9 +99,13 @@ public class RadarBikeService extends IntentService {
                if(o.intValue() == 1){
                    Toast.makeText(RadarBikeService.this.getApplicationContext(),
                                   "Ciclista por perto!!", Toast.LENGTH_LONG).show();
+                   AdvertisementHelper
+                           .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
                } else if(o.intValue() > 1){
                    Toast.makeText(RadarBikeService.this.getApplicationContext(),
                                   "Ciclistas por perto!!", Toast.LENGTH_LONG).show();
+                   AdvertisementHelper
+                           .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
                }
 
                /** makes a new server request after an specific elapsed time */

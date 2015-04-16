@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.radarbike.R;
+import com.android.radarbike.service.RadarBikeService;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -32,8 +33,10 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_driver_settings) {
+            RadarBikeService.startActionDriver(this);
+        } else if (id == R.id.action_cyclist_settings){
+            RadarBikeService.startActionCyclist(this);
         }
 
         return super.onOptionsItemSelected(item);

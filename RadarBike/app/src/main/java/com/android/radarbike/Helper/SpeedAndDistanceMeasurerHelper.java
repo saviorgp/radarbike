@@ -5,6 +5,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.android.radarbike.utils.Logger;
+
 /**
  * Created by vntalgo on 3/31/2015.
  */
@@ -40,6 +42,8 @@ public class SpeedAndDistanceMeasurerHelper {
             result = true;
         }
 
+        Logger.LOGD("isCyclistThresholdReached: "+ result);
+
         return result;
     }
 
@@ -54,6 +58,8 @@ public class SpeedAndDistanceMeasurerHelper {
         if(results[0] <= CYCLIST_DISTANCE_THRESHOLD){
             result = true;
         }
+
+        Logger.LOGD("alertDriver: "+ result);
 
         return result;
     }
