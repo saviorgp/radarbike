@@ -7,6 +7,8 @@ import android.location.LocationManager;
 
 import com.android.radarbike.utils.Logger;
 
+import java.util.List;
+
 /**
  * Created by vntalgo on 3/31/2015.
  */
@@ -26,7 +28,13 @@ public class SpeedAndDistanceMeasurerHelper {
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
 
+        List<String> lProviders = locationManager.getProviders(false);
+        for(int i=0; i<lProviders.size(); i++){
+            Logger.LOGD(lProviders.get(i));
+        }
+
         String provider = locationManager.getBestProvider(criteria, false);
+        Logger.LOGD("best location provider is: "+ provider);
         Location location = locationManager.getLastKnownLocation(provider);
 
         return location;
@@ -39,6 +47,7 @@ public class SpeedAndDistanceMeasurerHelper {
 
         if(location.getSpeed() >= CYCLIST_SPEED_MIN_THRESHOLD
                 && location.getSpeed() <= CYCLIST_SPEED_MAX_THRESHOLD){
+            Logger.LOGD("Current speed is: " + location.getSpeed());
             result = true;
         }
 

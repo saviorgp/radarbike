@@ -13,6 +13,7 @@ import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
 import com.android.radarbike.Helper.WebServiceHelper;
 import com.android.radarbike.model.PositionsVO;
 import com.android.radarbike.model.component.WebServiceWrapper;
+import com.android.radarbike.utils.Logger;
 
 import java.util.List;
 import java.util.Timer;
@@ -27,7 +28,7 @@ public class RadarBikeService extends IntentService {
     private static final String ACTION_DRIVER = "com.android.radarbike.service.action.DRIVER";
     private static final String ACTION_CYCLIST = "com.android.radarbike.service.action.CYCLIST";
 
-    private static final int SERVICE_REQUEST_FREQUENCY = 10000;
+    private static final int SERVICE_REQUEST_FREQUENCY = 20000;
 
     /**
      * Starts this service to perform driver action. If
@@ -60,6 +61,7 @@ public class RadarBikeService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Logger.LOGD("Radar Bike service running");
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_DRIVER.equals(action)) {
