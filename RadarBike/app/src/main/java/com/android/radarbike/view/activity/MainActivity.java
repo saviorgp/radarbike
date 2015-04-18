@@ -21,26 +21,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Acquire a reference to the system
-        LocationManager locationManager = (LocationManager) this .getSystemService(LOCATION_SERVICE);
-        // Define a listener that responds to location updates
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                Logger.LOGD("Current speed:" + location.getSpeed());
-                Toast.makeText(MainActivity.this, "Current speed:" + location.getSpeed(),
-                        Toast.LENGTH_LONG).show();
-
-            }
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-            public void onProviderEnabled(String provider) {
-            }
-            public void onProviderDisabled(String provider) {
-            } };
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-
     }
 
 
