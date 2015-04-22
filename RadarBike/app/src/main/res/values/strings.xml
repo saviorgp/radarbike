@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Radar Bike</string>
+    <string name="app_name">RadarBike</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_driver_settings">Driver Settings</string>
     <string name="action_cyclist_settings">Cyclist Settings</string>

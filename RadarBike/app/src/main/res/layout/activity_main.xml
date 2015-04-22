@@ -1,11 +1,49 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/driver"
+    tools:context=".MainActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+   <TextView
+       android:background="@color/gray_blue"
+       android:layout_alignParentTop="true"
+       android:layout_width="match_parent"
+       android:layout_height="50dip"
+       android:padding="7dip"
+       android:gravity="end"
+       style="@style/Black_30sp"
+       android:text="@string/app_name"/>
+
+    <RelativeLayout
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:gravity="center_horizontal"
+        android:background="@color/gray"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <at.markushi.ui.CircleButton
+            android:layout_alignParentLeft="true"
+            android:layout_width="150dip"
+            android:layout_height="150dip"
+            android:src="@drawable/car"
+            app:cb_color="#41B8DA"
+            app:cb_pressedRingWidth="10dip" />
+
+        <at.markushi.ui.CircleButton
+            android:layout_alignParentRight="true"
+            android:layout_width="150dip"
+            android:layout_height="150dip"
+            android:src="@drawable/bike"
+            app:cb_color="#C4CDDD"
+            app:cb_pressedRingWidth="10dip" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
