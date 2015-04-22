@@ -3,4 +3,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_driver_settings">Driver Settings</string>
     <string name="action_cyclist_settings">Cyclist Settings</string>
+    <string name="mode_driver">Mode: Driver</string>
+    <string name="mode_cyclist">Mode: Cyclist</string>
 </resources>

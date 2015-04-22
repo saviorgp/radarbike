@@ -1,18 +1,14 @@
 package com.android.radarbike.view.activity;
 
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ImageButton;
 
-import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
 import com.android.radarbike.R;
 import com.android.radarbike.service.RadarBikeService;
-import com.android.radarbike.utils.Logger;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -21,6 +17,18 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        findViewById(R.id.btDriver).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                    findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.driver));
+            }
+        });
+
+        findViewById(R.id.btCyclist).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.cyclist));
+            }
+        });
     }
 
 
