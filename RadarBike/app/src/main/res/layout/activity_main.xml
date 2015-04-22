@@ -6,7 +6,7 @@
     android:background="@drawable/driver"
     tools:context=".MainActivity">
 
-   <TextView
+  <!-- <TextView
        android:background="@color/gray_blue"
        android:layout_alignParentTop="true"
        android:layout_width="match_parent"
@@ -14,7 +14,7 @@
        android:padding="7dip"
        android:gravity="end"
        style="@style/Black_30sp"
-       android:text="@string/app_name"/>
+       android:text="@string/app_name"/>-->
 
     <RelativeLayout
         android:paddingLeft="15dip"
