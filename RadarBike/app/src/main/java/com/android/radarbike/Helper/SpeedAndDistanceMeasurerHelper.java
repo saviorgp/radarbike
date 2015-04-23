@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.android.radarbike.utils.Logger;
 
@@ -48,11 +49,17 @@ public class SpeedAndDistanceMeasurerHelper {
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
 
-        String provider = locationManager.getBestProvider(criteria, false);
+        final String provider = locationManager.getBestProvider(criteria, false);
         Logger.LOGD("best location provider is: "+ provider);
         currentLocation = locationManager.getLastKnownLocation(provider);
-        locationManager
-                .requestLocationUpdates(provider, 0, 0, locationListener);
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                locationManager
+                        .requestLocationUpdates(provider, 0, 0, locationListener);
+            }
+        });
     }
 
     public static Location getLastLocation(Context context){
