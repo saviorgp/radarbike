@@ -5,4 +5,5 @@
     <string name="action_cyclist_settings">Cyclist Settings</string>
     <string name="mode_driver">Mode: Driver</string>
     <string name="mode_cyclist">Mode: Cyclist</string>
+    <string name="driver_advise">Atenção, ciclista nas proximidades.</string>
 </resources>
