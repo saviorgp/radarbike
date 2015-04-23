@@ -7,4 +7,6 @@ public class Constants {
 
     public static enum APPMODE {Bike, Car, Truck, Taxi, Bus, Cyclist};
 
+    public static int TTS_AVAILABILITY_CHECK_CODE = 100;
+
 }

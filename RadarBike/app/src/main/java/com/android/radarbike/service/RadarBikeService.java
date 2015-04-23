@@ -1,5 +1,6 @@
 package com.android.radarbike.service;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -30,6 +31,7 @@ public class RadarBikeService extends IntentService {
     private static final String ACTION_CYCLIST = "com.android.radarbike.service.action.CYCLIST";
     private static final String ACTION_NO_MODE = "com.android.radarbike.service.action.NO_MODE";
     private static String currentMode;
+    private static Activity currentActivity;
 
     private static final int SERVICE_REQUEST_FREQUENCY = 20000;
 
@@ -46,6 +48,10 @@ public class RadarBikeService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startActionDriver(Context context) {
+        if(context instanceof Activity){
+            currentActivity = (Activity) context;
+        }
+
         currentMode = ACTION_DRIVER;
         Intent intent = new Intent(context, RadarBikeService.class);
         intent.setAction(ACTION_DRIVER);
@@ -59,6 +65,10 @@ public class RadarBikeService extends IntentService {
      * @see IntentService
      */
     public static void startActionCyclist(Context context) {
+        if(context instanceof Activity){
+            currentActivity = (Activity) context;
+        }
+
         currentMode = ACTION_DRIVER;
         Intent intent = new Intent(context, RadarBikeService.class);
         intent.setAction(ACTION_CYCLIST);
@@ -118,6 +128,7 @@ public class RadarBikeService extends IntentService {
                                   "Ciclistas por perto!!", Toast.LENGTH_LONG).show();
                    AdvertisementHelper
                            .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
+                   AdvertisementHelper.triggerTTSAdvertisement(currentActivity);
                }
 
                 if(currentMode.equals(ACTION_DRIVER)) {

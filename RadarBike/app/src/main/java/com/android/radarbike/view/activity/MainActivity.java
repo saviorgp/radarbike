@@ -1,16 +1,20 @@
 package com.android.radarbike.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.android.radarbike.Helper.AdvertisementHelper;
 import com.android.radarbike.Helper.NotificationHelper;
 import com.android.radarbike.R;
 import com.android.radarbike.service.RadarBikeService;
 import com.android.radarbike.utils.Constants;
+import com.android.radarbike.utils.Logger;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -31,8 +35,13 @@ public class MainActivity extends ActionBarActivity {
                 findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.cyclist));
             }
         });
-    }
 
+        /* check if TTS is installed */
+        Intent checkTTSIntent = new Intent();
+        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        this.startActivityForResult(checkTTSIntent, Constants.TTS_AVAILABILITY_CHECK_CODE);
+        //AdvertisementHelper.triggerTTSAdvertisement(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,5 +67,16 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.TTS_AVAILABILITY_CHECK_CODE) {
+            Logger.LOGD("TTS request code is: " + resultCode);
+            if (resultCode != TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                Intent installTTSIntent = new Intent();
+                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTSIntent);
+            }
+        }
     }
 }
