@@ -7,8 +7,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.android.radarbike.Helper.NotificationHelper;
 import com.android.radarbike.R;
 import com.android.radarbike.service.RadarBikeService;
+import com.android.radarbike.utils.Constants;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -49,8 +51,10 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_driver_settings) {
             RadarBikeService.startActionDriver(this);
+            NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Car);
         } else if (id == R.id.action_cyclist_settings){
             RadarBikeService.startActionCyclist(this);
+            NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Cyclist);
         }
 
         return super.onOptionsItemSelected(item);

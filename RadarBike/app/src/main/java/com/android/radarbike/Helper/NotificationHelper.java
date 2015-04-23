@@ -33,27 +33,27 @@ public class NotificationHelper {
         switch (mode){
             case Car:
                 contentText = "Modo carro ativado";
-                icon = R.drawable.app_icon;
+                icon = R.drawable.car;
                 break;
             case Bus:
                 contentText = "Modo ônibus ativado";
-                icon = R.drawable.app_icon;
+                icon = R.drawable.car;
                 break;
             case Bike:
                 contentText = "Modo moto ativado";
-                icon = R.drawable.app_icon;
+                icon = R.drawable.car;
                 break;
             case Taxi:
                 contentText = "Modo taxi ativado";
-                icon = R.drawable.app_icon;
+                icon = R.drawable.car;
                 break;
             case Truck:
                 contentText = "Modo caminhão ativado";
-                icon = R.drawable.app_icon;
+                icon = R.drawable.car;
                 break;
             case Cyclist:
                 contentText = "Modo ciclista ativado";
-                icon = R.drawable.app_icon;
+                icon = R.drawable.bike;
                 break;
             default:
                 contentText = "";

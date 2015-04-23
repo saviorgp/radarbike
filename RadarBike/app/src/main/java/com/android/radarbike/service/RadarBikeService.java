@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.android.radarbike.Helper.AdvertisementHelper;
+import com.android.radarbike.Helper.NotificationHelper;
 import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
 import com.android.radarbike.Helper.WebServiceHelper;
 import com.android.radarbike.model.PositionsVO;
@@ -27,8 +28,15 @@ public class RadarBikeService extends IntentService {
 
     private static final String ACTION_DRIVER = "com.android.radarbike.service.action.DRIVER";
     private static final String ACTION_CYCLIST = "com.android.radarbike.service.action.CYCLIST";
+    private static final String ACTION_NO_MODE = "com.android.radarbike.service.action.NO_MODE";
+    private static String currentMode;
 
     private static final int SERVICE_REQUEST_FREQUENCY = 20000;
+
+
+    public RadarBikeService() {
+        super("RadarBikeService");
+    }
 
     /**
      * Starts this service to perform driver action. If
@@ -38,6 +46,7 @@ public class RadarBikeService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startActionDriver(Context context) {
+        currentMode = ACTION_DRIVER;
         Intent intent = new Intent(context, RadarBikeService.class);
         intent.setAction(ACTION_DRIVER);
         context.startService(intent);
@@ -50,13 +59,14 @@ public class RadarBikeService extends IntentService {
      * @see IntentService
      */
     public static void startActionCyclist(Context context) {
+        currentMode = ACTION_DRIVER;
         Intent intent = new Intent(context, RadarBikeService.class);
         intent.setAction(ACTION_CYCLIST);
         context.startService(intent);
     }
 
-    public RadarBikeService() {
-        super("RadarBikeService");
+    public static void stopService(){
+        currentMode = ACTION_NO_MODE;
     }
 
     @Override
@@ -110,16 +120,19 @@ public class RadarBikeService extends IntentService {
                            .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
                }
 
-               /** makes a new server request after an specific elapsed time */
-               Timer t = new Timer();
-               t.schedule(new TimerTask() {
-                   @Override
-                   public void run() {
-                       RadarBikeService
-                               .startActionDriver(RadarBikeService.this.getApplicationContext());
-                   }
-               },SERVICE_REQUEST_FREQUENCY);
+                if(currentMode.equals(ACTION_DRIVER)) {
+                    /** makes a new server request after an specific elapsed time */
+                    Timer t = new Timer();
+                    t.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            RadarBikeService
+                                    .startActionDriver(RadarBikeService.this.getApplicationContext());
+                        }
+                    }, SERVICE_REQUEST_FREQUENCY);
+                }
             }
+
         }.execute();
     }
 
@@ -142,18 +155,28 @@ public class RadarBikeService extends IntentService {
                                                                   location.getLongitude()));
                 }
 
-                /** makes a new server request after an specific elapsed time */
-                Timer t = new Timer();
-                t.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        RadarBikeService
-                                .startActionCyclist(RadarBikeService.this.getApplicationContext());
-                    }
-                },SERVICE_REQUEST_FREQUENCY);
+                if(currentMode.equals(ACTION_CYCLIST)) {
+                    /** makes a new server request after an specific elapsed time */
+                    Timer t = new Timer();
+                    t.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            RadarBikeService
+                                    .startActionCyclist(RadarBikeService.this.getApplicationContext());
+                        }
+                    }, SERVICE_REQUEST_FREQUENCY);
+                }
 
                 return null;
             }
         }.execute();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(currentMode.equals(ACTION_NO_MODE)) {
+            NotificationHelper.dismissNotification(getApplicationContext());
+        }
     }
 }
