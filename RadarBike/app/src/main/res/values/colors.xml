@@ -7,4 +7,7 @@
     <color name="gray_blue">#66C4CDDD</color>
     <color name="light_blue">#41B8DA</color>
     <color name="yellow">#D8D800</color>
+
+    <color name="bt_active">#41B8DA</color>
+    <color name="bt_no_active">#C4CDDD</color>
 </resources>

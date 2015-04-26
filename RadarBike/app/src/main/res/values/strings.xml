@@ -6,4 +6,12 @@
     <string name="mode_driver">Mode: Driver</string>
     <string name="mode_cyclist">Mode: Cyclist</string>
     <string name="driver_advise">Atenção, ciclista nas proximidades.</string>
+    <string name="driver_mode">Driver Mode</string>
+    <string name="motorcycle">Moto</string>
+    <string name="car">Carro</string>
+    <string name="taxi">Táxi</string>
+    <string name="bus">Ônibus</string>
+    <string name="truck">Caminhão</string>
+    <string name="close">Fechar</string>
+    <string name="ok">OK</string>
 </resources>

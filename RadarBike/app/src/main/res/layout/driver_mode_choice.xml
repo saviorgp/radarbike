@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioButton
+        android:id="@+id/rb_motorcycler"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/motorcycle" />
+
+    <RadioButton
+        android:id="@+id/rb_car"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/car" />
+
+    <RadioButton
+        android:id="@+id/rb_taxi"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/taxi" />
+
+    <RadioButton
+        android:id="@+id/rb_truck"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/truck" />
+
+    <LinearLayout
+        android:layout_margin="10dip"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/bt_ok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"/>
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/bt_close"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/close"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

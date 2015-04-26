@@ -1,5 +1,6 @@
 package com.android.radarbike.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -7,31 +8,47 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 
-import com.android.radarbike.Helper.AdvertisementHelper;
 import com.android.radarbike.Helper.NotificationHelper;
 import com.android.radarbike.R;
 import com.android.radarbike.service.RadarBikeService;
 import com.android.radarbike.utils.Constants;
 import com.android.radarbike.utils.Logger;
 
+import at.markushi.ui.CircleButton;
+
 
 public class MainActivity extends ActionBarActivity {
+
+    private CircleButton btDriver = null;
+    private CircleButton btCyclist = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.btDriver).setOnClickListener(new View.OnClickListener() {
+        initComponent();
+
+        btDriver.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                    findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.driver));
+
+                btDriver.setColor(getResources().getColor(R.color.bt_active));
+                btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
+                btDriver.invalidate();
+
+                findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.driver));
+
+                showDialogDriverMode();
             }
         });
 
-        findViewById(R.id.btCyclist).setOnClickListener(new View.OnClickListener() {
+        btCyclist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                btDriver.setColor(getResources().getColor(R.color.bt_no_active));
+                btCyclist.setColor(getResources().getColor(R.color.bt_active));
+
                 findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.cyclist));
             }
         });
@@ -41,6 +58,37 @@ public class MainActivity extends ActionBarActivity {
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         this.startActivityForResult(checkTTSIntent, Constants.TTS_AVAILABILITY_CHECK_CODE);
         //AdvertisementHelper.triggerTTSAdvertisement(this);
+    }
+
+    /**
+     * Init View components
+     */
+    private void initComponent(){
+
+        btDriver = (CircleButton)findViewById(R.id.btDriver);
+        btCyclist = (CircleButton)findViewById(R.id.btCyclist);
+    }
+
+    private void showDialogDriverMode(){
+
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.driver_mode_choice);
+        dialog.setTitle(getString(R.string.driver_mode));
+        dialog.setCancelable(true);
+
+        dialog.findViewById(R.id.bt_ok).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.findViewById(R.id.bt_close).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     @Override
