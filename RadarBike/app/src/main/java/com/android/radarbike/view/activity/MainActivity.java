@@ -1,6 +1,8 @@
 package com.android.radarbike.view.activity;
 
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -96,7 +98,7 @@ public class MainActivity extends ActionBarActivity {
 
                 final int selectedId = radioGroup.getCheckedRadioButtonId();
 
-                if (selectedId != -1){
+                if (selectedId != -1) {
                     RadarBikeService.startActionDriver(MainActivity.this);
                     if (selectedId == R.id.rb_motorcycler){
                         Toast.makeText(getApplicationContext(),"moto", Toast.LENGTH_LONG).show();
@@ -201,5 +203,15 @@ public class MainActivity extends ActionBarActivity {
         Intent i = new Intent(Intent.ACTION_MAIN);
         i.addCategory(Intent.CATEGORY_HOME);
         startActivity(i);
+    }
+
+    private boolean iServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (RadarBikeService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

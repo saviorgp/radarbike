@@ -30,10 +30,10 @@ public class RadarBikeService extends IntentService {
     private static final String ACTION_DRIVER = "com.android.radarbike.service.action.DRIVER";
     private static final String ACTION_CYCLIST = "com.android.radarbike.service.action.CYCLIST";
     private static final String ACTION_NO_MODE = "com.android.radarbike.service.action.NO_MODE";
-    private static String currentMode;
+    private static volatile String currentMode;
     private static Activity currentActivity;
 
-    private static final int SERVICE_REQUEST_FREQUENCY = 20000;
+    private static final int SERVICE_REQUEST_FREQUENCY = 15000;
 
 
     public RadarBikeService() {
@@ -53,6 +53,10 @@ public class RadarBikeService extends IntentService {
         }
 
         currentMode = ACTION_DRIVER;
+        triggerActionDriver(context);
+    }
+
+    private static void triggerActionDriver(Context context){
         Intent intent = new Intent(context, RadarBikeService.class);
         intent.setAction(ACTION_DRIVER);
         context.startService(intent);
@@ -65,11 +69,17 @@ public class RadarBikeService extends IntentService {
      * @see IntentService
      */
     public static void startActionCyclist(Context context) {
-        if(context instanceof Activity){
+        if (context instanceof Activity) {
             currentActivity = (Activity) context;
         }
 
-        currentMode = ACTION_DRIVER;
+
+        currentMode = ACTION_CYCLIST;
+        triggerActionCyclist(context);
+    }
+
+
+    private static void triggerActionCyclist(Context context){
         Intent intent = new Intent(context, RadarBikeService.class);
         intent.setAction(ACTION_CYCLIST);
         context.startService(intent);
@@ -78,6 +88,8 @@ public class RadarBikeService extends IntentService {
     public static void stopService(){
         currentMode = ACTION_NO_MODE;
     }
+
+
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -140,7 +152,7 @@ public class RadarBikeService extends IntentService {
                         @Override
                         public void run() {
                             RadarBikeService
-                                    .startActionDriver(RadarBikeService.this.getApplicationContext());
+                                .triggerActionDriver(RadarBikeService.this.getApplicationContext());
                         }
                     }, SERVICE_REQUEST_FREQUENCY);
                 }
@@ -178,7 +190,7 @@ public class RadarBikeService extends IntentService {
                         @Override
                         public void run() {
                             RadarBikeService
-                                    .startActionCyclist(RadarBikeService.this.getApplicationContext());
+                               .triggerActionCyclist(RadarBikeService.this.getApplicationContext());
                         }
                     }, SERVICE_REQUEST_FREQUENCY);
                 }
