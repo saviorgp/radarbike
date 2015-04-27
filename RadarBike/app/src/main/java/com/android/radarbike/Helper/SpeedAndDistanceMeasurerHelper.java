@@ -19,6 +19,7 @@ public class SpeedAndDistanceMeasurerHelper {
     private static LocationManager locationManager;
     private static LocationListener locationListener;
     private static Location currentLocation;
+    private static Object lock = new Object();
 
     private static final float CYCLIST_SPEED_MIN_THRESHOLD = 2.77777778f;
     private static final float CYCLIST_SPEED_MAX_THRESHOLD = 9.72222223f;
@@ -31,9 +32,10 @@ public class SpeedAndDistanceMeasurerHelper {
         // Define a listener that responds to location updates
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
-                synchronized (currentLocation) {
+                synchronized (lock) {
                     currentLocation = location;
-                    Logger.LOGD("Current speed:" + currentLocation.getSpeed());
+                    Logger.LOGD("Updated speed is:" + currentLocation.getSpeed());
+                    Logger.LOGD("Updated location is: "+ currentLocation);
                 }
             }
 
@@ -68,7 +70,8 @@ public class SpeedAndDistanceMeasurerHelper {
             initLocationListener(context);
         }
 
-        synchronized (currentLocation) {
+        synchronized (lock) {
+            Logger.LOGD("current location is: "+ currentLocation);
             return currentLocation;
         }
     }
@@ -78,10 +81,12 @@ public class SpeedAndDistanceMeasurerHelper {
 
         Location location = getLastLocation(context);
 
-        if(location.getSpeed() >= CYCLIST_SPEED_MIN_THRESHOLD
-                && location.getSpeed() <= CYCLIST_SPEED_MAX_THRESHOLD){
-            Logger.LOGD("Current speed is: " + location.getSpeed());
-            result = true;
+        if(location != null) {
+            if (location.getSpeed() >= CYCLIST_SPEED_MIN_THRESHOLD
+                    && location.getSpeed() <= CYCLIST_SPEED_MAX_THRESHOLD) {
+                Logger.LOGD("Current speed is: " + location.getSpeed());
+                result = true;
+            }
         }
 
         Logger.LOGD("isCyclistThresholdReached: "+ result);
@@ -95,10 +100,12 @@ public class SpeedAndDistanceMeasurerHelper {
 
         Location location = getLastLocation(context);
 
-        Location.distanceBetween(lat,lng,location.getLatitude(),location.getLongitude(),results);
+        if(location != null) {
+            Location.distanceBetween(lat, lng, location.getLatitude(), location.getLongitude(), results);
 
-        if(results[0] <= CYCLIST_DISTANCE_THRESHOLD){
-            result = true;
+            if (results[0] <= CYCLIST_DISTANCE_THRESHOLD) {
+                result = true;
+            }
         }
 
         Logger.LOGD("alertDriver: "+ result);

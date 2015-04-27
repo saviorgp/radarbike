@@ -162,9 +162,11 @@ public class RadarBikeService extends IntentService {
                     Location location =
                             SpeedAndDistanceMeasurerHelper
                                     .getLastLocation(RadarBikeService.this.getApplicationContext());
-                    WebServiceHelper.sendPosition(RadarBikeService.this.getApplicationContext(),
-                                                  new PositionsVO(location.getLatitude(),
-                                                                  location.getLongitude()));
+                    if(location != null) {
+                        WebServiceHelper.sendPosition(RadarBikeService.this.getApplicationContext(),
+                                new PositionsVO(location.getLatitude(),
+                                        location.getLongitude()));
+                    }
                 }
 
                 if(currentMode.equals(ACTION_CYCLIST)) {
