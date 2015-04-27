@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">RadarBike</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_driver_settings">Driver Settings</string>
     <string name="action_cyclist_settings">Cyclist Settings</string>
     <string name="mode_driver">Mode: Driver</string>
@@ -12,6 +11,7 @@
     <string name="taxi">Táxi</string>
     <string name="bus">Ônibus</string>
     <string name="truck">Caminhão</string>
-    <string name="close">Fechar</string>
+    <string name="close">Cancelar</string>
     <string name="ok">OK</string>
+    <string name="info_message">A aplicação ficará em execução em plano de fundo no modo selecionado.</string>
 </resources>

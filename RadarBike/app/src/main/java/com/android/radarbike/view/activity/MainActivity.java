@@ -8,9 +8,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.android.radarbike.Helper.AdvertisementHelper;
 import com.android.radarbike.Helper.NotificationHelper;
 import com.android.radarbike.R;
+import com.android.radarbike.model.Preferences;
 import com.android.radarbike.service.RadarBikeService;
 import com.android.radarbike.utils.Constants;
 import com.android.radarbike.utils.Logger;
@@ -50,6 +54,14 @@ public class MainActivity extends ActionBarActivity {
                 btCyclist.setColor(getResources().getColor(R.color.bt_active));
 
                 findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.cyclist));
+
+                RadarBikeService.startActionCyclist(MainActivity.this);
+                NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Cyclist);
+                Preferences.getPreferences(getApplicationContext())
+                        .editPreference(Constants.SELECTED_MODE, R.id.btCyclist);
+
+                // TODO impl. info dialog
+                toBackground();
             }
         });
 
@@ -58,6 +70,7 @@ public class MainActivity extends ActionBarActivity {
         checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         this.startActivityForResult(checkTTSIntent, Constants.TTS_AVAILABILITY_CHECK_CODE);
         //AdvertisementHelper.triggerTTSAdvertisement(this);
+        //AdvertisementHelper.triggerAdvertisement(getApplicationContext());
     }
 
     /**
@@ -74,19 +87,73 @@ public class MainActivity extends ActionBarActivity {
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.driver_mode_choice);
         dialog.setTitle(getString(R.string.driver_mode));
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
+
+        RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radioGroup);
+        final int selectedId = radioGroup.getCheckedRadioButtonId();
 
         dialog.findViewById(R.id.bt_ok).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (selectedId != -1){
+                    RadarBikeService.startActionDriver(MainActivity.this);
+                    if (selectedId == R.id.rb_motorcycler){
+                        Toast.makeText(getApplicationContext(),"moto", Toast.LENGTH_LONG).show();
+                        NotificationHelper.showNotification(getApplicationContext(),
+                                                            Constants.APPMODE.Bike);
+                        Preferences.getPreferences(getApplicationContext())
+                                .editPreference(Constants.SELECTED_MODE,
+                                                R.id.rb_motorcycler);
+                    } else if (selectedId == R.id.rb_car){
+                        Toast.makeText(getApplicationContext(),"car", Toast.LENGTH_LONG).show();
+                        NotificationHelper.showNotification(getApplicationContext(),
+                                                            Constants.APPMODE.Car);
+                        Preferences.getPreferences(getApplicationContext())
+                                .editPreference(Constants.SELECTED_MODE,
+                                                R.id.rb_car);
+
+                    } else if (selectedId == R.id.rb_taxi){
+                        Toast.makeText(getApplicationContext(),"taxi", Toast.LENGTH_LONG).show();
+                        NotificationHelper.showNotification(getApplicationContext(),
+                                                            Constants.APPMODE.Taxi);
+                        Preferences.getPreferences(getApplicationContext())
+                                .editPreference(Constants.SELECTED_MODE,
+                                                R.id.rb_taxi);
+
+                    } else if (selectedId == R.id.rb_truck){
+                        Toast.makeText(getApplicationContext(),"truck", Toast.LENGTH_LONG).show();
+                        NotificationHelper.showNotification(getApplicationContext(),
+                                                            Constants.APPMODE.Truck);
+                        Preferences.getPreferences(getApplicationContext())
+                                .editPreference(Constants.SELECTED_MODE,
+                                                R.id.rb_truck);
+                    }
+                }
                 dialog.dismiss();
+
+                // TODO impl. info dialog
+                toBackground();
             }
         });
 
         dialog.findViewById(R.id.bt_close).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialog.dismiss();
+
+                btDriver.setColor(getResources().getColor(R.color.bt_no_active));
+                btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
+
+                findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.init));
             }
         });
+
+        int selectedMode =
+                Preferences.getPreferences(getApplicationContext())
+                        .getSelectedModePreference();
+        if(selectedMode != 0){
+            radioGroup.check(selectedMode);
+        } else{
+            radioGroup.check(R.id.rb_motorcycler);
+        }
 
         dialog.show();
     }
@@ -107,11 +174,11 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_driver_settings) {
-            RadarBikeService.startActionDriver(this);
-            NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Car);
+            //RadarBikeService.startActionDriver(this);
+            //NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Car);
         } else if (id == R.id.action_cyclist_settings){
-            RadarBikeService.startActionCyclist(this);
-            NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Cyclist);
+            //RadarBikeService.startActionCyclist(this);
+            //NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Cyclist);
         }
 
         return super.onOptionsItemSelected(item);
@@ -126,5 +193,11 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(installTTSIntent);
             }
         }
+    }
+
+    private void toBackground(){
+        Intent i = new Intent(Intent.ACTION_MAIN);
+        i.addCategory(Intent.CATEGORY_HOME);
+        startActivity(i);
     }
 }

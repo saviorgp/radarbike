@@ -123,6 +123,7 @@ public class RadarBikeService extends IntentService {
                                   "Ciclista por perto!!", Toast.LENGTH_LONG).show();
                    AdvertisementHelper
                            .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
+                   AdvertisementHelper.triggerTTSAdvertisement(currentActivity);
                } else if(o.intValue() > 1){
                    Toast.makeText(RadarBikeService.this.getApplicationContext(),
                                   "Ciclistas por perto!!", Toast.LENGTH_LONG).show();
