@@ -89,11 +89,13 @@ public class MainActivity extends ActionBarActivity {
         dialog.setTitle(getString(R.string.driver_mode));
         dialog.setCancelable(false);
 
-        RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radioGroup);
-        final int selectedId = radioGroup.getCheckedRadioButtonId();
+        final RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radioGroup);
 
         dialog.findViewById(R.id.bt_ok).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                final int selectedId = radioGroup.getCheckedRadioButtonId();
+
                 if (selectedId != -1){
                     RadarBikeService.startActionDriver(MainActivity.this);
                     if (selectedId == R.id.rb_motorcycler){
@@ -149,7 +151,7 @@ public class MainActivity extends ActionBarActivity {
         int selectedMode =
                 Preferences.getPreferences(getApplicationContext())
                         .getSelectedModePreference();
-        if(selectedMode != 0){
+        if(selectedMode != 0 && selectedMode != R.id.btCyclist){
             radioGroup.check(selectedMode);
         } else{
             radioGroup.check(R.id.rb_motorcycler);

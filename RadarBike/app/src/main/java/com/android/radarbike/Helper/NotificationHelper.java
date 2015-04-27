@@ -65,6 +65,7 @@ public class NotificationHelper {
         Notification notification = null;
 
         Intent notificationIntent = new Intent(context, MainActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(context,
                 0, notificationIntent, 0);
 

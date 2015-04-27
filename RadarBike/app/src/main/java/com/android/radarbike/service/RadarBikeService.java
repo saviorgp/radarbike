@@ -118,6 +118,7 @@ public class RadarBikeService extends IntentService {
             @Override
             protected void onPostExecute(Integer o) {
                // TODO change to trigger audio alerts
+                Logger.LOGD("Modo motorista em execução!");
                if(o.intValue() == 1){
                    Toast.makeText(RadarBikeService.this.getApplicationContext(),
                                   "Ciclista por perto!!", Toast.LENGTH_LONG).show();
@@ -157,6 +158,7 @@ public class RadarBikeService extends IntentService {
 
             @Override
             protected Integer doInBackground(Object... params) {
+                Logger.LOGD("Modo ciclista em execução!");
                 if(SpeedAndDistanceMeasurerHelper
                         .isCyclistThresholdReached(RadarBikeService.this.getApplicationContext())){
                     Location location =
