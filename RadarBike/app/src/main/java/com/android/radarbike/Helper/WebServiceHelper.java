@@ -44,4 +44,12 @@ public class WebServiceHelper {
         Logger.LOGD("SENDING pos by " + imei + ": " + vo.getLat() + "-" + vo.getLng());
         WebServiceWrapper.callSetPosition(imei,vo.getLat(),vo.getLng());
     }
+
+    public static void checkoutPosition(Context context){
+        TelephonyManager telephonyManager =
+                (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = telephonyManager.getDeviceId();
+        Logger.LOGD("Checking out pos");
+        WebServiceWrapper.callCheckout(imei);
+    }
 }

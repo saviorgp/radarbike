@@ -14,4 +14,6 @@ public class Constants {
 
     public static String SELECTED_MODE = "SELECTED_MODE";
 
+    public static String IS_POS_CHECKED_OUT = "IS_POS_CHECKED_OUT";
+
 }

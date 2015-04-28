@@ -51,4 +51,8 @@ public class Preferences {
     public int getSelectedModePreference(){
         return this.prefs.getInt(Constants.SELECTED_MODE, 0);
     }
+
+    public boolean isPosCheckedOut(){
+        return this.prefs.getBoolean(Constants.IS_POS_CHECKED_OUT, false);
+    }
 }

@@ -8,7 +8,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
+import com.android.radarbike.model.Preferences;
+import com.android.radarbike.utils.Constants;
 import com.android.radarbike.utils.Logger;
 
 /**
@@ -76,18 +79,49 @@ public class SpeedAndDistanceMeasurerHelper {
         }
     }
 
-    public static boolean isCyclistThresholdReached(Context context){
+    public static boolean isCyclistThresholdReached(final Context context){
         boolean result = false;
 
         Location location = getLastLocation(context);
+        Handler handler = new Handler(Looper.getMainLooper());
 
         if(location != null) {
-            if (location.getSpeed() >= CYCLIST_SPEED_MIN_THRESHOLD
-                    && location.getSpeed() <= CYCLIST_SPEED_MAX_THRESHOLD) {
+            if ((location.getSpeed() >= CYCLIST_SPEED_MIN_THRESHOLD
+                    && location.getSpeed() <= CYCLIST_SPEED_MAX_THRESHOLD)
+                    || Logger.isDebugOn()) {
                 Logger.LOGD("Current speed is: " + location.getSpeed());
+                /*handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "SPEED THRESHOLD REACHED: " + currentLocation.getSpeed(), Toast.LENGTH_SHORT).show();
+                    }
+                });*/
+
                 result = true;
+
+                /* set the checkout position to false */
+                if(Preferences.getPreferences(context).isPosCheckedOut()){
+                    Preferences.getPreferences(context)
+                            .editPreference(Constants.IS_POS_CHECKED_OUT,false);
+                }
+            } else {
+                /* set the checkout position to true */
+                if(!Preferences.getPreferences(context).isPosCheckedOut()){
+                    WebServiceHelper.checkoutPosition(context);
+                    Preferences.getPreferences(context)
+                            .editPreference(Constants.IS_POS_CHECKED_OUT,true);
+                }
             }
         }
+
+        /*if(!result){
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, "SPEED THRESHOLD NOT REACHED: " + currentLocation.getSpeed(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }*/
 
         Logger.LOGD("isCyclistThresholdReached: "+ result);
 
