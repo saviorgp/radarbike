@@ -133,30 +133,31 @@ public class RadarBikeService extends IntentService {
 
             @Override
             protected void onPostExecute(Integer o) {
-               // TODO change to trigger audio alerts
-                Logger.LOGD("Modo motorista em execução!");
-               if(o.intValue() == 1){
-                   Toast.makeText(RadarBikeService.this.getApplicationContext(),
-                                  "Ciclista por perto!!", Toast.LENGTH_LONG).show();
-                   AdvertisementHelper
-                           .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
-                   AdvertisementHelper.triggerTTSAdvertisement(currentActivity);
-               } else if(o.intValue() > 1){
-                   Toast.makeText(RadarBikeService.this.getApplicationContext(),
-                                  "Ciclistas por perto!!", Toast.LENGTH_LONG).show();
-                   AdvertisementHelper
-                           .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
-                   AdvertisementHelper.triggerTTSAdvertisement(currentActivity);
-               }
-
                 if(currentMode.equals(ACTION_DRIVER)) {
+                    // TODO change to trigger audio alerts
+                    Logger.LOGD("Modo motorista em execução!");
+                    if (o.intValue() == 1) {
+                        Toast.makeText(RadarBikeService.this.getApplicationContext(),
+                                "Ciclista por perto!!", Toast.LENGTH_LONG).show();
+                        AdvertisementHelper
+                                .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
+                        AdvertisementHelper.triggerTTSAdvertisement(currentActivity);
+                    } else if (o.intValue() > 1) {
+                        Toast.makeText(RadarBikeService.this.getApplicationContext(),
+                                "Ciclistas por perto!!", Toast.LENGTH_LONG).show();
+                        AdvertisementHelper
+                                .triggerAdvertisement(RadarBikeService.this.getApplicationContext());
+                        AdvertisementHelper.triggerTTSAdvertisement(currentActivity);
+                    }
+
+
                     /** makes a new server request after an specific elapsed time */
                     Timer t = new Timer();
                     t.schedule(new TimerTask() {
                         @Override
                         public void run() {
                             RadarBikeService
-                                .triggerActionDriver(RadarBikeService.this.getApplicationContext());
+                                    .triggerActionDriver(RadarBikeService.this.getApplicationContext());
                         }
                     }, SERVICE_REQUEST_FREQUENCY);
                 }

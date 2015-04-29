@@ -22,7 +22,7 @@ public class WebServiceHelper {
         List<PositionsVO> posList = new ArrayList<PositionsVO>();
         try {
             JSONObject data = WebServiceWrapper.callGetPositions();
-            JSONArray positions = data.getJSONArray("positions");
+            JSONArray positions = data.getJSONArray("last_position");
             for(int i=0;i<positions.length();i++){
                 PositionsVO vo = new PositionsVO();
                 vo.setLat(((JSONObject) positions.get(i)).getDouble("lat"));
