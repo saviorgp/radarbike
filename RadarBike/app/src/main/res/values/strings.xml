@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">RadarBike</string>
-    <string name="action_driver_settings">Driver Settings</string>
-    <string name="action_cyclist_settings">Cyclist Settings</string>
+    <string name="settings_stop">Parar execução</string>
     <string name="mode_driver">Mode: Driver</string>
     <string name="mode_cyclist">Mode: Cyclist</string>
     <string name="driver_advise">Atenção, ciclista nas proximidades.</string>
@@ -14,4 +13,5 @@
     <string name="close">Cancelar</string>
     <string name="ok">OK</string>
     <string name="info_message">A aplicação ficará em execução em plano de fundo no modo selecionado.</string>
+    <string name="stop_confirm_message">O RadarBike finalizará a sua execução. Deseja confirmar?</string>
 </resources>

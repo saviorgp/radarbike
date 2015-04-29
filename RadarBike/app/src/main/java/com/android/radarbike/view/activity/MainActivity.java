@@ -1,8 +1,10 @@
 package com.android.radarbike.view.activity;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -26,8 +28,10 @@ import at.markushi.ui.CircleButton;
 
 public class MainActivity extends ActionBarActivity {
 
-    private CircleButton btDriver = null;
-    private CircleButton btCyclist = null;
+    private CircleButton btDriver;
+    private CircleButton btCyclist;
+    private AlertDialog currentDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,11 +146,7 @@ public class MainActivity extends ActionBarActivity {
         dialog.findViewById(R.id.bt_close).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialog.dismiss();
-
-                btDriver.setColor(getResources().getColor(R.color.bt_no_active));
-                btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
-
-                findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.init));
+                resetMode();
             }
         });
 
@@ -177,12 +177,9 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_driver_settings) {
-            //RadarBikeService.startActionDriver(this);
-            //NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Car);
-        } else if (id == R.id.action_cyclist_settings){
-            //RadarBikeService.startActionCyclist(this);
-            //NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Cyclist);
+        if (id == R.id.settings_stop) {
+            currentDialog = showConfirmStopDialog();
+            currentDialog.show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -213,5 +210,35 @@ public class MainActivity extends ActionBarActivity {
             }
         }
         return false;
+    }
+
+    private AlertDialog showConfirmStopDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.stop_confirm_message)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        resetMode();
+                        RadarBikeService.stopService();
+                        if(currentDialog != null){
+                            currentDialog.dismiss();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(currentDialog != null){
+                            currentDialog.dismiss();
+                        }
+                    }
+                });
+
+        return builder.create();
+    }
+
+    private void resetMode(){
+        btDriver.setColor(getResources().getColor(R.color.bt_no_active));
+        btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
+
+        findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.init));
     }
 }

@@ -7,7 +7,7 @@
     android:background="@drawable/init"
     tools:context=".MainActivity">
 
-   <TextView
+   <!-- TextView
        android:background="@color/gray_blue"
        android:layout_alignParentTop="true"
        android:layout_alignParentRight="true"
@@ -16,7 +16,7 @@
        android:padding="7dip"
        android:gravity="end"
        style="@style/Yellow_12sp"
-       android:text="@string/mode_driver"/>
+       android:text="@string/mode_driver"/ -->
 
     <RelativeLayout
         android:paddingLeft="15dip"

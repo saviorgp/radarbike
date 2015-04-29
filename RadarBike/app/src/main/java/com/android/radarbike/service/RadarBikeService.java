@@ -30,7 +30,7 @@ public class RadarBikeService extends IntentService {
     private static final String ACTION_DRIVER = "com.android.radarbike.service.action.DRIVER";
     private static final String ACTION_CYCLIST = "com.android.radarbike.service.action.CYCLIST";
     private static final String ACTION_NO_MODE = "com.android.radarbike.service.action.NO_MODE";
-    private static volatile String currentMode;
+    private static volatile String currentMode = ACTION_NO_MODE;
     private static Activity currentActivity;
 
     private static final int SERVICE_REQUEST_FREQUENCY = 15000;
@@ -52,8 +52,11 @@ public class RadarBikeService extends IntentService {
             currentActivity = (Activity) context;
         }
 
-        currentMode = ACTION_DRIVER;
-        triggerActionDriver(context);
+        /* only starts the server if a different mode was selected */
+        if(!currentMode.equals(ACTION_DRIVER)) {
+            currentMode = ACTION_DRIVER;
+            triggerActionDriver(context);
+        }
     }
 
     private static void triggerActionDriver(Context context){
@@ -73,9 +76,11 @@ public class RadarBikeService extends IntentService {
             currentActivity = (Activity) context;
         }
 
-
-        currentMode = ACTION_CYCLIST;
-        triggerActionCyclist(context);
+         /* only starts the server if a different mode was selected */
+        if(!currentMode.equals(ACTION_CYCLIST)) {
+            currentMode = ACTION_CYCLIST;
+            triggerActionCyclist(context);
+        }
     }
 
 
@@ -88,8 +93,6 @@ public class RadarBikeService extends IntentService {
     public static void stopService(){
         currentMode = ACTION_NO_MODE;
     }
-
-
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -114,6 +117,7 @@ public class RadarBikeService extends IntentService {
             @Override
             protected Integer doInBackground(Object... params) {
                 List<PositionsVO> posList = WebServiceHelper.getPositions();
+                Logger.LOGD("pos list size:" + posList.size());
                 int counter = 0;
                 /* check if there is any cyclist nearby. If one is found then the alert is trigged */
                 for(PositionsVO vo : posList){
