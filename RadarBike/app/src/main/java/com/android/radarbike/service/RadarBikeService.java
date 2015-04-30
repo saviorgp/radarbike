@@ -14,7 +14,9 @@ import com.android.radarbike.Helper.NotificationHelper;
 import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
 import com.android.radarbike.Helper.WebServiceHelper;
 import com.android.radarbike.model.PositionsVO;
+import com.android.radarbike.model.Preferences;
 import com.android.radarbike.model.component.WebServiceWrapper;
+import com.android.radarbike.utils.Constants;
 import com.android.radarbike.utils.Logger;
 
 import java.util.List;
@@ -56,6 +58,7 @@ public class RadarBikeService extends IntentService {
         if(!currentMode.equals(ACTION_DRIVER)) {
             currentMode = ACTION_DRIVER;
             triggerActionDriver(context);
+            SpeedAndDistanceMeasurerHelper.updatePositionCheckout(context);
         }
     }
 
@@ -116,7 +119,8 @@ public class RadarBikeService extends IntentService {
 
             @Override
             protected Integer doInBackground(Object... params) {
-                List<PositionsVO> posList = WebServiceHelper.getPositions();
+                List<PositionsVO> posList =
+                       WebServiceHelper.getPositions(RadarBikeService.this.getApplicationContext());
                 Logger.LOGD("pos list size:" + posList.size());
                 int counter = 0;
                 /* check if there is any cyclist nearby. If one is found then the alert is trigged */
