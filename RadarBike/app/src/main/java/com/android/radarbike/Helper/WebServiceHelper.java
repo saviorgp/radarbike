@@ -18,17 +18,23 @@ import java.util.List;
  */
 public class WebServiceHelper {
 
-    public static List<PositionsVO> getPositions(){
+    public static List<PositionsVO> getPositions(Context context){
         List<PositionsVO> posList = new ArrayList<PositionsVO>();
+        TelephonyManager telephonyManager =
+                (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = telephonyManager.getDeviceId();
+
         try {
             JSONObject data = WebServiceWrapper.callGetPositions();
             JSONArray positions = data.getJSONArray("last_position");
             for(int i=0;i<positions.length();i++){
-                PositionsVO vo = new PositionsVO();
-                vo.setLat(((JSONObject) positions.get(i)).getDouble("lat"));
-                vo.setLng(((JSONObject) positions.get(i)).getDouble("lng"));
-                posList.add(vo);
-                Logger.LOGD("GETTING pos: " + vo.getLat() + "-" + vo.getLng());
+                if(!((JSONObject) positions.get(i)).getJSONObject("device").get("imei").equals(imei)){
+                    PositionsVO vo = new PositionsVO();
+                    vo.setLat(((JSONObject) positions.get(i)).getDouble("lat"));
+                    vo.setLng(((JSONObject) positions.get(i)).getDouble("lng"));
+                    posList.add(vo);
+                    Logger.LOGD("GETTING pos: " + vo.getLat() + "-" + vo.getLng());
+                }
             }
         } catch(Throwable t){
             Logger.LOGE(t.getMessage());
@@ -45,7 +51,7 @@ public class WebServiceHelper {
         WebServiceWrapper.callSetPosition(imei,vo.getLat(),vo.getLng());
     }
 
-    public static void checkoutPosition(Context context){
+    static void checkoutPosition(Context context){
         TelephonyManager telephonyManager =
                 (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String imei = telephonyManager.getDeviceId();

@@ -5,14 +5,19 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import com.android.radarbike.model.PositionsVO;
 import com.android.radarbike.model.Preferences;
 import com.android.radarbike.utils.Constants;
 import com.android.radarbike.utils.Logger;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by vntalgo on 3/31/2015.
@@ -105,11 +110,8 @@ public class SpeedAndDistanceMeasurerHelper {
                             .editPreference(Constants.IS_POS_CHECKED_OUT,false);
                 }
             } else {
-                /* set the checkout position to true */
-                if(!Preferences.getPreferences(context).isPosCheckedOut()){
-                    WebServiceHelper.checkoutPosition(context);
-                    Preferences.getPreferences(context)
-                            .editPreference(Constants.IS_POS_CHECKED_OUT,true);
+                if(!Preferences.getPreferences(context).isPosCheckedOut()) {
+                    updatePositionCheckout(context);
                 }
             }
         }
@@ -145,5 +147,20 @@ public class SpeedAndDistanceMeasurerHelper {
         Logger.LOGD("alertDriver: "+ result);
 
         return result;
+    }
+
+    public static void updatePositionCheckout(final Context context){
+        /* set the checkout position to true */
+        new AsyncTask<Object, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Object... params) {
+                WebServiceHelper.checkoutPosition(context);
+                Preferences.getPreferences(context)
+                        .editPreference(Constants.IS_POS_CHECKED_OUT,true);
+
+                return null;
+            }
+        }.execute();
     }
 }

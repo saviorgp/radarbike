@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.android.radarbike.Helper.AdvertisementHelper;
 import com.android.radarbike.Helper.NotificationHelper;
+import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
+import com.android.radarbike.Helper.WebServiceHelper;
 import com.android.radarbike.R;
 import com.android.radarbike.model.Preferences;
 import com.android.radarbike.service.RadarBikeService;
@@ -77,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
         this.startActivityForResult(checkTTSIntent, Constants.TTS_AVAILABILITY_CHECK_CODE);
         //AdvertisementHelper.triggerTTSAdvertisement(this);
         //AdvertisementHelper.triggerAdvertisement(getApplicationContext());
+        //SpeedAndDistanceMeasurerHelper.updatePositionCheckout(this);
     }
 
     /**
