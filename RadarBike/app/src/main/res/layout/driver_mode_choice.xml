@@ -28,6 +28,12 @@
                 android:text="@string/taxi" />
 
             <RadioButton
+                android:id="@+id/rb_bus"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bus" />
+
+            <RadioButton
                 android:id="@+id/rb_truck"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

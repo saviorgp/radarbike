@@ -18,7 +18,7 @@ public class Logger {
     private static final String TAG = "RadarBike";
 
     // Debug flag
-    private static boolean DEBUG = true;
+    private static boolean DEBUG = false;
 
     /**
      * Enable all the logs

@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.radarbike.Helper.AdvertisementHelper;
+import com.android.radarbike.Helper.GAHelper;
 import com.android.radarbike.Helper.NotificationHelper;
 import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
 import com.android.radarbike.Helper.WebServiceHelper;
@@ -57,19 +58,7 @@ public class MainActivity extends ActionBarActivity {
 
         btCyclist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                btDriver.setColor(getResources().getColor(R.color.bt_no_active));
-                btCyclist.setColor(getResources().getColor(R.color.bt_active));
-
-                findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.cyclist));
-
-                RadarBikeService.startActionCyclist(MainActivity.this);
-                NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Cyclist);
-                Preferences.getPreferences(getApplicationContext())
-                        .editPreference(Constants.SELECTED_MODE, R.id.btCyclist);
-
-                // TODO impl. info dialog
-                toBackground();
+                initCyclistMode();
             }
         });
 
@@ -80,6 +69,110 @@ public class MainActivity extends ActionBarActivity {
         //AdvertisementHelper.triggerTTSAdvertisement(this);
         //AdvertisementHelper.triggerAdvertisement(getApplicationContext());
         //SpeedAndDistanceMeasurerHelper.updatePositionCheckout(this);
+
+        if(getIntent().getBooleanExtra(Constants.GPS_LAUNCHED, false)){
+           int selectedMode = Preferences.getPreferences(getApplicationContext())
+                                                             .getSelectedModePreference();
+           if(selectedMode != 0) {
+               if(selectedMode == R.id.btCyclist){
+                  initCyclistMode();
+               } else {
+                   initDriverMode();
+                   initSubDriverMode(selectedMode);
+                   toBackground();
+               }
+           }
+        }
+    }
+
+    private void initCyclistMode(){
+        btDriver.setColor(getResources().getColor(R.color.bt_no_active));
+        btCyclist.setColor(getResources().getColor(R.color.bt_active));
+
+        findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.cyclist));
+
+        RadarBikeService.startActionCyclist(MainActivity.this);
+        NotificationHelper.showNotification(getApplicationContext(), Constants.APPMODE.Cyclist);
+        Preferences.getPreferences(getApplicationContext())
+                .editPreference(Constants.SELECTED_MODE, R.id.btCyclist);
+        GAHelper.sendGoogleAnalyticsEventData(Constants.GA_CATEGORY_APP_USE,
+                                              Constants.GA_ACTION_APP_START,
+                                              Constants.GA_LABEL_BIKE,
+                                              getApplicationContext());
+
+        // TODO impl. info dialog
+        toBackground();
+    }
+
+    private void initDriverMode(){
+        btDriver.setColor(getResources().getColor(R.color.bt_active));
+        btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
+        btDriver.invalidate();
+
+        findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.driver));
+    }
+
+    private void initSubDriverMode(int selectedId){
+        if (selectedId != -1) {
+            RadarBikeService.startActionDriver(MainActivity.this);
+            if (selectedId == R.id.rb_motorcycler){
+                Toast.makeText(getApplicationContext(),"moto", Toast.LENGTH_LONG).show();
+                NotificationHelper.showNotification(getApplicationContext(),
+                        Constants.APPMODE.Bike);
+                Preferences.getPreferences(getApplicationContext())
+                        .editPreference(Constants.SELECTED_MODE,
+                                R.id.rb_motorcycler);
+                GAHelper.sendGoogleAnalyticsEventData(Constants.GA_CATEGORY_APP_USE,
+                                                      Constants.GA_ACTION_APP_START,
+                                                      Constants.GA_LABEL_MOTOCYCLE,
+                                                      getApplicationContext());
+            } else if (selectedId == R.id.rb_car){
+                Toast.makeText(getApplicationContext(),"car", Toast.LENGTH_LONG).show();
+                NotificationHelper.showNotification(getApplicationContext(),
+                        Constants.APPMODE.Car);
+                Preferences.getPreferences(getApplicationContext())
+                        .editPreference(Constants.SELECTED_MODE,
+                                R.id.rb_car);
+                GAHelper.sendGoogleAnalyticsEventData(Constants.GA_CATEGORY_APP_USE,
+                                                      Constants.GA_ACTION_APP_START,
+                                                      Constants.GA_LABEL_CAR_DRIVER,
+                                                      getApplicationContext());
+
+            } else if (selectedId == R.id.rb_taxi){
+                Toast.makeText(getApplicationContext(),"taxi", Toast.LENGTH_LONG).show();
+                NotificationHelper.showNotification(getApplicationContext(),
+                        Constants.APPMODE.Taxi);
+                Preferences.getPreferences(getApplicationContext())
+                        .editPreference(Constants.SELECTED_MODE,
+                                R.id.rb_taxi);
+                GAHelper.sendGoogleAnalyticsEventData(Constants.GA_CATEGORY_APP_USE,
+                                                      Constants.GA_ACTION_APP_START,
+                                                      Constants.GA_LABEL_TAXI_DRIVER,
+                                                      getApplicationContext());
+            } else if (selectedId == R.id.rb_truck){
+                Toast.makeText(getApplicationContext(),"truck", Toast.LENGTH_LONG).show();
+                NotificationHelper.showNotification(getApplicationContext(),
+                        Constants.APPMODE.Truck);
+                Preferences.getPreferences(getApplicationContext())
+                        .editPreference(Constants.SELECTED_MODE,
+                                R.id.rb_truck);
+                GAHelper.sendGoogleAnalyticsEventData(Constants.GA_CATEGORY_APP_USE,
+                                                      Constants.GA_ACTION_APP_START,
+                                                      Constants.GA_LABEL_TRUCK_DRIVER,
+                                                      getApplicationContext());
+            } else if (selectedId == R.id.rb_bus){
+                Toast.makeText(getApplicationContext(),"bus", Toast.LENGTH_LONG).show();
+                NotificationHelper.showNotification(getApplicationContext(),
+                        Constants.APPMODE.Bus);
+                Preferences.getPreferences(getApplicationContext())
+                        .editPreference(Constants.SELECTED_MODE,
+                                R.id.rb_bus);
+                GAHelper.sendGoogleAnalyticsEventData(Constants.GA_CATEGORY_APP_USE,
+                        Constants.GA_ACTION_APP_START,
+                        Constants.GA_LABEL_BUS_DRIVER,
+                        getApplicationContext());
+            }
+        }
     }
 
     /**
@@ -104,41 +197,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 final int selectedId = radioGroup.getCheckedRadioButtonId();
-
-                if (selectedId != -1) {
-                    RadarBikeService.startActionDriver(MainActivity.this);
-                    if (selectedId == R.id.rb_motorcycler){
-                        Toast.makeText(getApplicationContext(),"moto", Toast.LENGTH_LONG).show();
-                        NotificationHelper.showNotification(getApplicationContext(),
-                                                            Constants.APPMODE.Bike);
-                        Preferences.getPreferences(getApplicationContext())
-                                .editPreference(Constants.SELECTED_MODE,
-                                                R.id.rb_motorcycler);
-                    } else if (selectedId == R.id.rb_car){
-                        Toast.makeText(getApplicationContext(),"car", Toast.LENGTH_LONG).show();
-                        NotificationHelper.showNotification(getApplicationContext(),
-                                                            Constants.APPMODE.Car);
-                        Preferences.getPreferences(getApplicationContext())
-                                .editPreference(Constants.SELECTED_MODE,
-                                                R.id.rb_car);
-
-                    } else if (selectedId == R.id.rb_taxi){
-                        Toast.makeText(getApplicationContext(),"taxi", Toast.LENGTH_LONG).show();
-                        NotificationHelper.showNotification(getApplicationContext(),
-                                                            Constants.APPMODE.Taxi);
-                        Preferences.getPreferences(getApplicationContext())
-                                .editPreference(Constants.SELECTED_MODE,
-                                                R.id.rb_taxi);
-
-                    } else if (selectedId == R.id.rb_truck){
-                        Toast.makeText(getApplicationContext(),"truck", Toast.LENGTH_LONG).show();
-                        NotificationHelper.showNotification(getApplicationContext(),
-                                                            Constants.APPMODE.Truck);
-                        Preferences.getPreferences(getApplicationContext())
-                                .editPreference(Constants.SELECTED_MODE,
-                                                R.id.rb_truck);
-                    }
-                }
+                initSubDriverMode(selectedId);
                 dialog.dismiss();
 
                 // TODO impl. info dialog
