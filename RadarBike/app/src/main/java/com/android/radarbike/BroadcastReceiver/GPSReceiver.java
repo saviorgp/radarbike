@@ -17,6 +17,7 @@ public class GPSReceiver extends BroadcastReceiver {
         if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
 
             Intent startIntent = new Intent(context, MainActivity.class);
+            startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startIntent.putExtra(Constants.GPS_LAUNCHED, true);
             context.startActivity(startIntent);
         }
