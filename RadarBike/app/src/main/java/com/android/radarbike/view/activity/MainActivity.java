@@ -41,24 +41,34 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final int selectedMode = Preferences.getPreferences(getApplicationContext())
+                .getSelectedModePreference();
+
         initComponent();
 
         btDriver.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                int selectedMode = Preferences.getPreferences(getApplicationContext())
+                        .getSelectedModePreference();
+                if(selectedMode != 0 && selectedMode != R.id.btCyclist) {
+                    btDriver.setColor(getResources().getColor(R.color.bt_active));
+                    btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
+                    btDriver.invalidate();
 
-                btDriver.setColor(getResources().getColor(R.color.bt_active));
-                btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
-                btDriver.invalidate();
+                    findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.driver));
 
-                findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.driver));
-
-                showDialogDriverMode();
+                    showDialogDriverMode();
+                }
             }
         });
 
         btCyclist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                initCyclistMode();
+                if(Preferences.getPreferences(getApplicationContext())
+                        .getSelectedModePreference() != R.id.btCyclist) {
+                    initCyclistMode();
+                    toBackground();
+                }
             }
         });
 
@@ -71,17 +81,27 @@ public class MainActivity extends ActionBarActivity {
         //SpeedAndDistanceMeasurerHelper.updatePositionCheckout(this);
 
         if(getIntent().getBooleanExtra(Constants.GPS_LAUNCHED, false)){
-           int selectedMode = Preferences.getPreferences(getApplicationContext())
-                                                             .getSelectedModePreference();
+
            if(selectedMode != 0) {
                if(selectedMode == R.id.btCyclist){
                   initCyclistMode();
+                  toBackground();
                } else {
                    initDriverMode();
                    initSubDriverMode(selectedMode);
                    toBackground();
                }
            }
+        } else {
+            if(selectedMode != 0) {
+                if(selectedMode == R.id.btCyclist){
+                    initCyclistMode();
+
+                } else {
+                    initDriverMode();
+                    initSubDriverMode(selectedMode);
+                }
+            }
         }
     }
 
@@ -99,9 +119,6 @@ public class MainActivity extends ActionBarActivity {
                                               Constants.GA_ACTION_APP_START,
                                               Constants.GA_LABEL_BIKE,
                                               getApplicationContext());
-
-        // TODO impl. info dialog
-        toBackground();
     }
 
     private void initDriverMode(){
@@ -302,5 +319,14 @@ public class MainActivity extends ActionBarActivity {
         btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
 
         findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.init));
+
+        Preferences.getPreferences(getApplicationContext())
+                .editPreference(Constants.SELECTED_MODE, 0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        RadarBikeService.stopService();
+        super.onDestroy();
     }
 }
