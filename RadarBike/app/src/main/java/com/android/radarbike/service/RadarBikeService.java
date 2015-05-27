@@ -2,21 +2,17 @@ package com.android.radarbike.service;
 
 import android.app.Activity;
 import android.app.IntentService;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.android.radarbike.Helper.AdvertisementHelper;
-import com.android.radarbike.Helper.NotificationHelper;
-import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
-import com.android.radarbike.Helper.WebServiceHelper;
+import com.android.radarbike.helper.AdvertisementHelper;
+import com.android.radarbike.helper.NotificationHelper;
+import com.android.radarbike.helper.SpeedAndDistanceMeasurerHelper;
+import com.android.radarbike.helper.WebServiceHelper;
 import com.android.radarbike.model.PositionsVO;
-import com.android.radarbike.model.Preferences;
-import com.android.radarbike.model.component.WebServiceWrapper;
-import com.android.radarbike.utils.Constants;
 import com.android.radarbike.utils.Logger;
 
 import java.util.List;

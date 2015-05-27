@@ -15,11 +15,8 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.android.radarbike.Helper.AdvertisementHelper;
-import com.android.radarbike.Helper.GAHelper;
-import com.android.radarbike.Helper.NotificationHelper;
-import com.android.radarbike.Helper.SpeedAndDistanceMeasurerHelper;
-import com.android.radarbike.Helper.WebServiceHelper;
+import com.android.radarbike.helper.GAHelper;
+import com.android.radarbike.helper.NotificationHelper;
 import com.android.radarbike.R;
 import com.android.radarbike.model.Preferences;
 import com.android.radarbike.service.RadarBikeService;
@@ -50,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 int selectedMode = Preferences.getPreferences(getApplicationContext())
                         .getSelectedModePreference();
-                if(selectedMode != 0 && selectedMode != R.id.btCyclist) {
+                if(selectedMode == 0 || selectedMode == R.id.btCyclist) {
                     btDriver.setColor(getResources().getColor(R.color.bt_active));
                     btCyclist.setColor(getResources().getColor(R.color.bt_no_active));
                     btDriver.invalidate();
