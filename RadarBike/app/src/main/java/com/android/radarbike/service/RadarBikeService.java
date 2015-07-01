@@ -209,6 +209,7 @@ public class RadarBikeService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         if(currentMode.equals(ACTION_NO_MODE)) {
+            SpeedAndDistanceMeasurerHelper.updatePositionCheckout(getApplicationContext());
             NotificationHelper.dismissNotification(getApplicationContext());
         }
     }

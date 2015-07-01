@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">RadarBike</string>
     <string name="settings_stop">Parar execução</string>
+    <string name="settings_sair">Sair</string>
     <string name="mode_driver">Mode: Driver</string>
     <string name="mode_cyclist">Mode: Cyclist</string>
     <string name="driver_advise">Atenção, ciclista nas proximidades.</string>

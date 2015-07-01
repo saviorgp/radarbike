@@ -1,4 +1,4 @@
-package com.android.radarbike.Helper;
+package com.android.radarbike.helper;
 
 import android.content.Context;
 import android.location.Criteria;
@@ -9,15 +9,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
 
-import com.android.radarbike.model.PositionsVO;
 import com.android.radarbike.model.Preferences;
 import com.android.radarbike.utils.Constants;
 import com.android.radarbike.utils.Logger;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by vntalgo on 3/31/2015.

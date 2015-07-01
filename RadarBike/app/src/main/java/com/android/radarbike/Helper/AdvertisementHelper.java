@@ -1,4 +1,4 @@
-package com.android.radarbike.Helper;
+package com.android.radarbike.helper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,8 +8,6 @@ import android.speech.tts.TextToSpeech;
 import android.widget.Toast;
 
 import com.android.radarbike.R;
-
-import java.util.Locale;
 
 /**
  * Created by vntalgo on 4/16/2015.

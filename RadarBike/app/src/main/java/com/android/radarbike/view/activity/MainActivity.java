@@ -31,6 +31,7 @@ public class MainActivity extends ActionBarActivity {
     private CircleButton btDriver;
     private CircleButton btCyclist;
     private AlertDialog currentDialog;
+    private boolean needToExit;
 
 
     @Override
@@ -55,6 +56,8 @@ public class MainActivity extends ActionBarActivity {
                     findViewById(R.id.main_layout).setBackground(getResources().getDrawable(R.drawable.driver));
 
                     showDialogDriverMode();
+                } else {
+                    toBackground();
                 }
             }
         });
@@ -64,8 +67,9 @@ public class MainActivity extends ActionBarActivity {
                 if(Preferences.getPreferences(getApplicationContext())
                         .getSelectedModePreference() != R.id.btCyclist) {
                     initCyclistMode();
-                    toBackground();
                 }
+
+                toBackground();
             }
         });
 
@@ -99,6 +103,11 @@ public class MainActivity extends ActionBarActivity {
                     initSubDriverMode(selectedMode);
                 }
             }
+        }
+
+        if(getIntent().getBooleanExtra(Constants.CLOSE_APP, false)){
+            RadarBikeService.stopService();
+            finish();
         }
     }
 
@@ -256,6 +265,10 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.settings_stop) {
             currentDialog = showConfirmStopDialog();
             currentDialog.show();
+        } else  if (id == R.id.settings_exit) {
+            needToExit = true;
+            currentDialog = showConfirmStopDialog();
+            currentDialog.show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -295,14 +308,18 @@ public class MainActivity extends ActionBarActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         resetMode();
                         RadarBikeService.stopService();
-                        if(currentDialog != null){
+                        if (currentDialog != null) {
                             currentDialog.dismiss();
+                            if (needToExit) {
+                                needToExit = false;
+                                finish();
+                            }
                         }
                     }
                 })
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(currentDialog != null){
+                        if (currentDialog != null) {
                             currentDialog.dismiss();
                         }
                     }
@@ -325,5 +342,20 @@ public class MainActivity extends ActionBarActivity {
     protected void onDestroy() {
         RadarBikeService.stopService();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(getIntent().getBooleanExtra(Constants.CLOSE_APP, false)){
+            RadarBikeService.stopService();
+            finish();
+        }
     }
 }

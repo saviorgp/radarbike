@@ -1,4 +1,4 @@
-package com.android.radarbike.Helper;
+package com.android.radarbike.helper;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -77,7 +77,9 @@ public class NotificationHelper {
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(false)
                     .setContentTitle(contentTitle)
-                    .setContentText(contentText);
+                    .setContentText(contentText)
+                    .setAutoCancel(false)
+                    .setOngoing(true);
 
             notification = supportBuilder.build();
         } else {
@@ -88,7 +90,9 @@ public class NotificationHelper {
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(false)
                     .setContentTitle(contentTitle)
-                    .setContentText(contentText);
+                    .setContentText(contentText)
+                    .setAutoCancel(false)
+                    .setOngoing(true);
 
            notification = builder.build();
         }

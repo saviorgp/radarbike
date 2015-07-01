@@ -1,4 +1,4 @@
-package com.android.radarbike.Helper;
+package com.android.radarbike.helper;
 
 import android.content.Context;
 

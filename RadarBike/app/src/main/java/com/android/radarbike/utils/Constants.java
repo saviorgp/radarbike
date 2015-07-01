@@ -18,6 +18,8 @@ public class Constants {
 
     public static String GPS_LAUNCHED = "GPS_LAUNCHED";
 
+    public static String CLOSE_APP = "CLOSE_APP";
+
     public static String GA_CATEGORY_APP_USE = "Modo de Uso";
 
     public static String GA_ACTION_APP_START = "Incialização";
